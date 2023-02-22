@@ -102,7 +102,7 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps, onMounted, ref, defineExpose, watch } from "vue";
+import { defineProps, onMounted, ref, defineExpose } from "vue";
 import { getConsentValuesFromStorage } from '../shared/storageUtils';
 import CookieComplyModal from './CookieComplyModal.vue';
 import CookieComplyButton from './CookieComplyButton.vue';
@@ -152,14 +152,20 @@ const isModalOpen = ref(false)
 
 const route = useRoute()
 
+onMounted((): void => {
+  checkValues()
+})
+
 const checkValues = (): void => {
-  if ('consent' in route.query || localStorage.getItem('cookie-comply')) {
+  const searchParams = new URLSearchParams(document.location.search)
+  const consent = searchParams.get('consent')
+  if (consent || localStorage.getItem('cookie-comply')) {
     showCookieComply.value = false;
   }
-  if ('consent' in route.query && typeof route.query.consent === 'string') {
+  if (consent) {
     let consentValues: Array<string>
     try {
-      consentValues = JSON.parse(route.query.consent)
+      consentValues = JSON.parse(consent)
     } catch (error) {
       console.log('Error parsing consent values.');
     }
@@ -167,15 +173,6 @@ const checkValues = (): void => {
   }
   emit('on-cookie-comply-mount', getConsentValuesFromStorage());
 }
-
-watch(() => route?.query, () => {
-  if (!route?.query) {
-    return
-  }
-  checkValues()
-}, {
-  immediate: true
-})
 
 
 const handleAcceptAll = (): void => {
