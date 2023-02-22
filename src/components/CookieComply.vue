@@ -107,7 +107,6 @@ import { getConsentValuesFromStorage } from '../shared/storageUtils';
 import CookieComplyModal from './CookieComplyModal.vue';
 import CookieComplyButton from './CookieComplyButton.vue';
 import { scrollLock as vScrollLock } from '../directives/scroll-lock';
-import { useRoute } from "vue-router";
 
 interface Props {
   headerTitle?: string
@@ -149,8 +148,6 @@ const emit = defineEmits<Emits>()
 
 const showCookieComply = ref(true)
 const isModalOpen = ref(false)
-
-const route = useRoute()
 
 onMounted((): void => {
   checkValues()
