@@ -168,7 +168,10 @@ const checkValues = (): void => {
   emit('on-cookie-comply-mount', getConsentValuesFromStorage());
 }
 
-watch(() => route.query, () => {
+watch(() => route?.query, () => {
+  if (!route?.query) {
+    return
+  }
   checkValues()
 }, {
   immediate: true
