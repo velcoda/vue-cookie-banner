@@ -102,7 +102,7 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps, onMounted, ref, defineExpose } from "vue";
+import { defineProps, onMounted, ref, defineExpose, watch } from "vue";
 import { getConsentValuesFromStorage } from '../shared/storageUtils';
 import CookieComplyModal from './CookieComplyModal.vue';
 import CookieComplyButton from './CookieComplyButton.vue';
@@ -152,10 +152,6 @@ const isModalOpen = ref(false)
 
 const route = useRoute()
 
-onMounted((): void => {
-  checkValues()
-})
-
 const checkValues = (): void => {
   if ('consent' in route.query || localStorage.getItem('cookie-comply')) {
     showCookieComply.value = false;
@@ -171,6 +167,12 @@ const checkValues = (): void => {
   }
   emit('on-cookie-comply-mount', getConsentValuesFromStorage());
 }
+
+watch(() => route.query, () => {
+  checkValues()
+}, {
+  immediate: true
+})
 
 
 const handleAcceptAll = (): void => {
