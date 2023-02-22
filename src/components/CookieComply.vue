@@ -107,6 +107,7 @@ import { getConsentValuesFromStorage } from '../shared/storageUtils';
 import CookieComplyModal from './CookieComplyModal.vue';
 import CookieComplyButton from './CookieComplyButton.vue';
 import { scrollLock as vScrollLock } from '../directives/scroll-lock';
+import { useRoute } from "vue-router";
 
 interface Props {
   headerTitle?: string
@@ -149,12 +150,28 @@ const emit = defineEmits<Emits>()
 const showCookieComply = ref(true)
 const isModalOpen = ref(false)
 
+const route = useRoute()
+
 onMounted((): void => {
-  if (localStorage.getItem('cookie-comply')) {
+  checkValues()
+})
+
+const checkValues = (): void => {
+  if ('consent' in route.query || localStorage.getItem('cookie-comply')) {
     showCookieComply.value = false;
   }
+  if ('consent' in route.query && typeof route.query.consent === 'string') {
+    let consentValues: Array<string>
+    try {
+      consentValues = JSON.parse(route.query.consent)
+    } catch (error) {
+      console.log('Error parsing consent values.');
+    }
+    onSave(consentValues)
+  }
   emit('on-cookie-comply-mount', getConsentValuesFromStorage());
-})
+}
+
 
 const handleAcceptAll = (): void => {
   showCookieComply.value = false;
