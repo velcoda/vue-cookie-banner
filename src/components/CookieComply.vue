@@ -4,13 +4,10 @@
     class="cookie-comply-body-grey-out"
   />
   <aside
-    v-if="showCookieComply"
+    v-if="showCookieComply&& !isModalOpen"
     class="cookie-comply"
     :class="{ 'cookie-comply--modal-open': isModalOpen }"
   >
-    <template
-      v-if="!isModalOpen"
-    >
     <div class="cookie-comply__header">
       <slot name="header">
         <h3 class="cookie-comply__header-title">{{ headerTitle }}</h3>
@@ -35,34 +32,34 @@
         {{ acceptAllLabel }}
       </cookie-comply-button>
     </div>
-    </template>
-    <Teleport :to="target">
-      <cookie-comply-modal
-        v-if="isModalOpen"
-        :preferences="preferences"
-        :show-accept-all-in-modal="showAcceptAllInModal"
-        @cookie-comply-save="onSave"
-        @cookie-comply-accept-all="handleAcceptAll"
-        @cookie-comply-close="isModalOpen = false"
-      >
-        <template #modal-header>
-          <slot name="modal-header"></slot>
-        </template>
-
-        <template #modal-body="{ preference, index }">
-          <slot
-            name="modal-body"
-            :preference="preference"
-            :index="index"
-          ></slot>
-        </template>
-
-        <template #modal-footer>
-          <slot name="modal-footer"></slot>
-        </template>
-      </cookie-comply-modal>
-    </Teleport>
   </aside>
+  <Teleport :to="target">
+    <cookie-comply-modal
+      v-if="isModalOpen"
+      :preferences="preferences"
+      :show-accept-all-in-modal="showAcceptAllInModal"
+      @cookie-comply-save="onSave"
+      @cookie-comply-accept-all="handleAcceptAll"
+      @cookie-comply-close="isModalOpen = false"
+    >
+      <template #modal-header>
+        <slot name="modal-header"></slot>
+      </template>
+
+      <template #modal-body="{ preference, index }">
+        <slot
+          name="modal-body"
+          :preference="preference"
+          :index="index"
+        ></slot>
+      </template>
+
+      <template #modal-footer>
+        <slot name="modal-footer"></slot>
+      </template>
+    </cookie-comply-modal>
+  </Teleport>
+
   <aside
     v-if="showEditButton && !showCookieComply"
     class="cookie-comply-edit"
