@@ -4,8 +4,7 @@
     class="cookie-comply-body-grey-out"
   />
   <aside
-    v-if="showCookieComply"
-    v-scroll-lock="showCookieComply"
+    v-if="showCookieComply && !isModalOpen"
     class="cookie-comply"
     :class="{ 'cookie-comply--modal-open': isModalOpen }"
   >
@@ -102,11 +101,11 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps, onMounted, ref, defineExpose } from "vue";
-import { getConsentValuesFromStorage } from '../shared/storageUtils';
-import CookieComplyModal from './CookieComplyModal.vue';
-import CookieComplyButton from './CookieComplyButton.vue';
-import { scrollLock as vScrollLock } from '../directives/scroll-lock';
+import { defineProps, onMounted, ref, defineExpose, WritableComputedRef, watch } from "vue"
+import { getConsentValuesFromStorage } from '../shared/storageUtils'
+import CookieComplyModal from './CookieComplyModal.vue'
+import CookieComplyButton from './CookieComplyButton.vue'
+import { useScrollLock } from '@vueuse/core'
 
 interface Props {
   headerTitle?: string
@@ -151,6 +150,17 @@ const isModalOpen = ref(false)
 
 onMounted((): void => {
   checkValues()
+})
+
+const body: HTMLBodyElement | null = document.querySelector('body')
+const isBodyLocked: WritableComputedRef<boolean> = useScrollLock(body, false)
+
+watch([showCookieComply, isModalOpen], () => {
+  if (showCookieComply.value || isModalOpen.value) {
+    isBodyLocked.value = true
+    return
+  }
+  isBodyLocked.value = false
 })
 
 const checkValues = (): void => {
