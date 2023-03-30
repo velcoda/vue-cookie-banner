@@ -4,7 +4,7 @@
     class="cookie-comply-body-grey-out"
   />
   <aside
-    v-if="showCookieComply&& !isModalOpen"
+    v-if="showCookieComply && !isModalOpen"
     class="cookie-comply"
     :class="{ 'cookie-comply--modal-open': isModalOpen }"
   >
