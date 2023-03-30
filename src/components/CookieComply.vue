@@ -4,10 +4,13 @@
     class="cookie-comply-body-grey-out"
   />
   <aside
-    v-if="showCookieComply && !isModalOpen"
+    v-if="showCookieComply"
     class="cookie-comply"
     :class="{ 'cookie-comply--modal-open': isModalOpen }"
   >
+    <template
+      v-if="!isModalOpen"
+    >
     <div class="cookie-comply__header">
       <slot name="header">
         <h3 class="cookie-comply__header-title">{{ headerTitle }}</h3>
@@ -32,7 +35,7 @@
         {{ acceptAllLabel }}
       </cookie-comply-button>
     </div>
-
+    </template>
     <Teleport :to="target">
       <cookie-comply-modal
         v-if="isModalOpen"
