@@ -183,6 +183,7 @@ const checkValues = (): void => {
 
 
 const handleAcceptAll = (): void => {
+  isModalOpen.value = false
   showCookieComply.value = false;
   localStorage.setItem('cookie-comply', 'all');
   emit('on-accept-all-cookies');
