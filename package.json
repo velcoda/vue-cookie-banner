@@ -1,12 +1,12 @@
 {
-  "name": "vue-cookie-comply-with-reject",
+  "name": "vue-cookie-banner",
   "description": "A Vue 3 component to handle cookie acceptance on your website",
-  "version": "0.2.10",
+  "version": "1.0.0",
   "files": [
     "dist"
   ],
-  "main": "./dist/vue-cookie-comply.es.mjs",
-  "module": "./dist/vue-cookie-comply.es.mjs",
+  "main": "./dist/vue-cookie-banner.es.mjs",
+  "module": "./dist/vue-cookie-banner.es.mjs",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -16,7 +16,7 @@
     "ci": "rm -rf node_modules && yarn install --frozen-lockfile"
   },
   "repository": {
-    "url": "https://github.com/gluebi/vue-cookie-comply-with-reject/"
+    "url": "https://github.com/velcoda/vue-cookie-banner/"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^4.1.0",

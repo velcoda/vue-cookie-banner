@@ -1,6 +1,6 @@
 <template>
   <label
-    class="cookie-comply-switch"
+    class="cookie-banner-switch"
     :title="isRequired ? `is required` : value"
   >
     <input
@@ -12,8 +12,8 @@
       @input="onToggle($event.target.value)"
     />
     <span
-      class="cookie-comply-slider cookie-comply-round"
-      :class="{ 'cookie-comply-required': isRequired }"
+      class="cookie-banner-slider cookie-banner-round"
+      :class="{ 'cookie-banner-required': isRequired }"
     ></span>
   </label>
 </template>
@@ -55,20 +55,20 @@ const onToggle = (value: string): void => {
 </script>
 
 <style>
-.cookie-comply-switch {
+.cookie-banner-switch {
   position: relative;
   display: inline-block;
   width: 60px;
   height: 34px;
 }
 
-.cookie-comply-switch input {
+.cookie-banner-switch input {
   opacity: 0;
   width: 0;
   height: 0;
 }
 
-.cookie-comply-slider {
+.cookie-banner-slider {
   position: absolute;
   cursor: pointer;
   top: 0;
@@ -80,7 +80,7 @@ const onToggle = (value: string): void => {
   transition: 0.4s;
 }
 
-.cookie-comply-slider:before {
+.cookie-banner-slider:before {
   position: absolute;
   content: '';
   height: 26px;
@@ -92,33 +92,33 @@ const onToggle = (value: string): void => {
   transition: 0.4s;
 }
 
-input:checked + .cookie-comply-slider {
+input:checked + .cookie-banner-slider {
   background-color: var(--color-green);
 }
 
-input:focus + .cookie-comply-slider {
+input:focus + .cookie-banner-slider {
   box-shadow: 0 0 1px var(--color-green);
 }
 
-input:checked + .cookie-comply-slider:before {
+input:checked + .cookie-banner-slider:before {
   -webkit-transform: translateX(26px);
   -ms-transform: translateX(26px);
   transform: translateX(26px);
 }
 
-.cookie-comply-slider.cookie-comply-round {
+.cookie-banner-slider.cookie-banner-round {
   border-radius: 34px;
 }
 
-.cookie-comply-slider.cookie-comply-round:before {
+.cookie-banner-slider.cookie-banner-round:before {
   border-radius: 50%;
 }
 
-.cookie-comply-required {
+.cookie-banner-required {
   cursor: not-allowed;
 }
 
-input:checked + .cookie-comply-required.cookie-comply-slider {
+input:checked + .cookie-banner-required.cookie-banner-slider {
   background-color: #ccc;
 }
 </style>

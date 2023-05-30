@@ -2,7 +2,7 @@
 
 [//]: # (Insert on Made with vue!)
 
-> A Vue 3 compatible component to handle cookie consent based off https://github.com/yaiks/vue-cookie-comply
+> A Vue 3 compatible component to handle cookie consent based off https://github.com/yaiks/vue-cookie-banner
 
 ## Features
 
@@ -21,27 +21,27 @@
 
 > This package is only compatible with Vue 3.x
 
-First install `vue-cookie-comply` as a dependency of your Vue app:
+First install `vue-cookie-banner` as a dependency of your Vue app:
 
 ```sh
-yarn add vue-cookie-comply
+yarn add vue-cookie-banner
 
 # or
 
-npm install vue-cookie-comply
+npm install vue-cookie-banner
 ```
 
-Then, install `vue-cookie-comply` as a plugin wherever you create your Vue app:
+Then, install `vue-cookie-banner` as a plugin wherever you create your Vue app:
 
 ```js
 import { createApp } from 'vue'
 import App from './App.vue'
-import VueCookieComply from 'vue-cookie-comply'
-import 'vue-cookie-comply/dist/style.css'
+import VueCookieBanner from 'vue-cookie-banner'
+import 'vue-cookie-banner/dist/style.css'
 
 const app = createApp(App)
 
-app.use(VueCookieComply)
+app.use(VueCookieBanner)
 app.mount('#app')
 ```
 
@@ -49,7 +49,7 @@ app.mount('#app')
 
 ## Usage
 
-Now you're ready to use the component `<vue-cookie-comply />` it in your app:
+Now you're ready to use the component `<vue-cookie-banner />` it in your app:
 
 ```vue
 <template>
@@ -58,7 +58,7 @@ Now you're ready to use the component `<vue-cookie-comply />` it in your app:
 
     <div />
 
-      <vue-cookie-comply
+      <vue-cookie-banner
         :preferences="preferences"
         @on-accept-all-cookies="onAccept"
         @on-save-cookie-preferences="onSavePreferences"
@@ -70,7 +70,7 @@ Now you're ready to use the component `<vue-cookie-comply />` it in your app:
 </template>
 ```
 
-> `vue-cookie-comply` automatically places the component at the bottom of your page
+> `vue-cookie-banner` automatically places the component at the bottom of your page
 
 ## Props
 
@@ -153,7 +153,7 @@ This event is dispatched when the user clicks the `Accept All` button. You can c
 
 ```vue
 <template>
-  <vue-cookie-comply
+  <vue-cookie-banner
     :preferences="preferences"
     @on-accept-all-cookies="onAccept"
   />
@@ -170,7 +170,7 @@ This event is dispatched when the user clicks the `Accept All` button. You can c
 </script>
 ```
 
-After `on-accept-all-cookies` is dispatched, a item with key `cookie-comply` is placed in the `localStorage`, with the value `all`. You can use the presence of this key and value to do some logic on the client. Once the `cookie-comply` key exists in the `localStorage`, the `vue-cookie-comply` won't show anymore in the page.
+After `on-accept-all-cookies` is dispatched, a item with key `cookie-banner` is placed in the `localStorage`, with the value `all`. You can use the presence of this key and value to do some logic on the client. Once the `cookie-banner` key exists in the `localStorage`, the `vue-cookie-banner` won't show anymore in the page.
 
 ### on-save-cookie-preferences
 
@@ -178,7 +178,7 @@ This event is dispatched when the user open the modal and saves their preference
 
 ```vue
 <template>
-  <vue-cookie-comply
+  <vue-cookie-banner
     :preferences="preferences"
     @on-save-cookie-preferences="onSavePreferences"
   />
@@ -195,14 +195,14 @@ This event is dispatched when the user open the modal and saves their preference
 </script>
 ```
 
-After `on-save-cookie-preferences` is dispatched, a item with key `cookie-comply` is placed in the `localStorage`, with the value of an array containing the values the user opted in, eg. `['performance', 'ga', 'newRelic']`. You can use the presence of this key and value to do some logic on the client. Once the `cookie-comply` key exists in the `localStorage`, the `vue-cookie-comply` won't show anymore in the page.
+After `on-save-cookie-preferences` is dispatched, a item with key `cookie-banner` is placed in the `localStorage`, with the value of an array containing the values the user opted in, eg. `['performance', 'ga', 'newRelic']`. You can use the presence of this key and value to do some logic on the client. Once the `cookie-banner` key exists in the `localStorage`, the `vue-cookie-banner` won't show anymore in the page.
 
 ## Composition
 
-You can use slots to leverage composition and customize `vue-cookie-comply` with your own components. If the slots are not used, it will default to the internal components.
+You can use slots to leverage composition and customize `vue-cookie-banner` with your own components. If the slots are not used, it will default to the internal components.
 
 ```vue
-<vue-cookie-comply
+<vue-cookie-banner
   :preferences="preferences"
   @on-accept-all-cookies="onAcceptAll"
   @on-save-cookie-preferences="onSavePreferences"
@@ -224,7 +224,7 @@ You can use slots to leverage composition and customize `vue-cookie-comply` with
         My custom modal footer
       </footer>
     </template>
-  </vue-cookie-comply>
+  </vue-cookie-banner>
 ```
 
 There are 4 slots to be customized: `v-slot:header`, `v-slot:modal-header`, `v-slot:modal-body`, `v-slot:modal-footer`. 

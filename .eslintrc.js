@@ -8,5 +8,5 @@ module.exports = {
     // 'vue/no-unused-vars': 'error'
     'vue/no-v-html': 'off'
   },
-  ignorePatterns: ['vue-cookie-comply.es.js']
+  ignorePatterns: ['vue-cookie-banner.es.js']
 };

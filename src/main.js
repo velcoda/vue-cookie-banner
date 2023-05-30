@@ -1,9 +1,9 @@
-import CookieComply from './components/CookieComply.vue';
+import CookieBanner from './components/CookieBanner.vue';
 
 export default {
   install: (app) => {
     if (!window) return;
 
-    app.component('VueCookieComply', CookieComply);
+    app.component('VueCookieBanner', CookieBanner);
   },
 };

@@ -1,5 +1,5 @@
 const getConsentValuesFromStorage = (): Array<string> => {
-  const cookieComply = localStorage.getItem('cookie-comply');
+  const cookieComply = localStorage.getItem('cookie-banner');
 
   if (!cookieComply) {
     return [];

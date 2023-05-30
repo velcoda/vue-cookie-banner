@@ -1,21 +1,21 @@
 <template>
-  <div class="cookie-comply__modal">
-    <div class="cookie-comply__modal-middle">
-      <div class="cookie-comply__modal-inner">
+  <div class="cookie-banner__modal">
+    <div class="cookie-banner__modal-middle">
+      <div class="cookie-banner__modal-inner">
         <img
           alt="Back arrow"
           src="../assets/modal_close.svg"
-          class="cookie-comply__close-icon"
+          class="cookie-banner__close-icon"
           @click="onCloseModal"
         />
 
-        <header class="cookie-comply__modal-header">
+        <header class="cookie-banner__modal-header">
           <slot name="modal-header">
             <h3>Your privacy preferences</h3>
           </slot>
         </header>
 
-        <main class="cookie-comply__modal-content">
+        <main class="cookie-banner__modal-content">
           <template
             v-for="(preference, index) in preferences"
             :key="index"
@@ -29,14 +29,14 @@
               <div
                 v-for="item in preference.items"
                 :key="item.value"
-                class="cookie-comply__modal-switches"
+                class="cookie-banner__modal-switches"
               >
                 <p
-                  class="cookie-comply__item-description"
+                  class="cookie-banner__item-description"
                   v-html="item.description"
                 />
-                <h3 class="cookie-comply__item-headline">{{ item.label }}</h3>
-                <cookie-comply-switch
+                <h3 class="cookie-banner__item-headline">{{ item.label }}</h3>
+                <cookie-banner-switch
                   :value="item.value"
                   :is-required="item.isRequired"
                   :is-default-enable="item.isEnable"
@@ -48,18 +48,18 @@
           </template>
         </main>
 
-        <footer class="cookie-comply__modal-footer">
+        <footer class="cookie-banner__modal-footer">
           <slot name="modal-footer">
-            <cookie-comply-button @handle-click="onSaveConfiguration">
+            <cookie-banner-button @handle-click="onSaveConfiguration">
               Save Settings
-            </cookie-comply-button>
-            <cookie-comply-button
+            </cookie-banner-button>
+            <cookie-banner-button
               v-if="showAcceptAllInModal"
-              class-name="cookie-comply__button-accept"
+              class-name="cookie-banner__button-accept"
               @handle-click="acceptAll"
             >
               Accept All
-            </cookie-comply-button>
+            </cookie-banner-button>
           </slot>
         </footer>
       </div>
@@ -68,8 +68,8 @@
 </template>
 
 <script setup lang="ts">
-import CookieComplyButton from './CookieComplyButton.vue';
-import CookieComplySwitch from './CookieComplySwitch.vue';
+import CookieBannerButton from './CookieBannerButton.vue';
+import CookieBannerSwitch from './CookieBannerSwitch.vue';
 import { getConsentValuesFromStorage } from "../shared/storageUtils";
 import { ref } from "vue";
 
@@ -79,9 +79,9 @@ interface Props {
 }
 
 interface Emits {
-  (e: 'cookie-comply-save', payload: Array<string>): void
-  (e: 'cookie-comply-close'): void
-  (e: 'cookie-comply-accept-all'): void
+  (e: 'cookie-banner-save', payload: Array<string>): void
+  (e: 'cookie-banner-close'): void
+  (e: 'cookie-banner-accept-all'): void
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -98,13 +98,13 @@ const handleCheckboxUpdate = ({ value, isEnable }): void => {
     : checkedValues.value.splice(checkedValues.value.indexOf(value), 1);
 }
 const onSaveConfiguration = (): void => {
-  emit('cookie-comply-save', checkedValues.value);
+  emit('cookie-banner-save', checkedValues.value);
 }
 const acceptAll = (): void => {
-  emit('cookie-comply-accept-all')
+  emit('cookie-banner-accept-all')
 }
 const onCloseModal = (): void => {
-  emit('cookie-comply-close');
+  emit('cookie-banner-close');
 }
 const getIsChecked = (value: string): boolean => {
   const values = getConsentValuesFromStorage();
@@ -122,7 +122,7 @@ const getIsChecked = (value: string): boolean => {
 </script>
 
 <style>
-.cookie-comply__modal {
+.cookie-banner__modal {
   display: table;
   position: absolute;
   top: 0;
@@ -132,12 +132,12 @@ const getIsChecked = (value: string): boolean => {
   background-color: var(--background-overlay);
 }
 
-.cookie-comply__modal-middle {
+.cookie-banner__modal-middle {
   display: table-cell;
   vertical-align: middle;
 }
 
-.cookie-comply__modal-inner {
+.cookie-banner__modal-inner {
   position: relative;
   margin-left: auto;
   margin-right: auto;
@@ -148,7 +148,7 @@ const getIsChecked = (value: string): boolean => {
   box-shadow: var(--box-shadow);
 }
 
-.cookie-comply__close-icon {
+.cookie-banner__close-icon {
   position: absolute;
   right: var(--spacing-lg);
   cursor: pointer;
@@ -156,13 +156,13 @@ const getIsChecked = (value: string): boolean => {
   height: 16px;
 }
 
-.cookie-comply__modal-content {
+.cookie-banner__modal-content {
   overflow-y: scroll;
   max-height: 400px;
   text-align: left;
 }
 
-.cookie-comply__modal-switches {
+.cookie-banner__modal-switches {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
@@ -171,20 +171,20 @@ const getIsChecked = (value: string): boolean => {
 }
 
 @media (max-width: 480px) {
-  .cookie-comply__modal-middle {
+  .cookie-banner__modal-middle {
     padding: var(--spacing-md);
   }
 
-  .cookie-comply__modal-inner {
+  .cookie-banner__modal-inner {
     width: auto;
   }
 }
 
-.cookie-comply__modal-header {
+.cookie-banner__modal-header {
   border-bottom: var(--border-color-light);
 }
 
-.cookie-comply__modal-footer {
+.cookie-banner__modal-footer {
   border-top: var(--border-color-light);
   padding-top: var(--spacing-lg);
   display: flex;

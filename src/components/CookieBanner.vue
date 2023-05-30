@@ -1,46 +1,46 @@
 <template>
   <div
-    v-if="greyOutBody && showCookieComply"
-    class="cookie-comply-body-grey-out"
+    v-if="greyOutBody && showCookieBanner"
+    class="cookie-banner-body-grey-out"
   />
   <aside
-    v-if="showCookieComply && !isModalOpen"
-    class="cookie-comply"
-    :class="{ 'cookie-comply--modal-open': isModalOpen }"
+    v-if="showCookieBanner && !isModalOpen"
+    class="cookie-banner"
+    :class="{ 'cookie-banner--modal-open': isModalOpen }"
   >
-    <div class="cookie-comply__header">
+    <div class="cookie-banner__header">
       <slot name="header">
-        <h3 class="cookie-comply__header-title">{{ headerTitle }}</h3>
+        <h3 class="cookie-banner__header-title">{{ headerTitle }}</h3>
         <p
-          class="cookie-comply__header-description"
+          class="cookie-banner__header-description"
           v-html="headerDescription"
         />
       </slot>
     </div>
 
-    <div class="cookie-comply__actions">
-      <cookie-comply-button @handle-click="handleRejectAll">
+    <div class="cookie-banner__actions">
+      <cookie-banner-button @handle-click="handleRejectAll">
         {{ rejectAllLabel }}
-      </cookie-comply-button>
-      <cookie-comply-button @handle-click="openPreferences">
+      </cookie-banner-button>
+      <cookie-banner-button @handle-click="openPreferences">
         {{ preferencesLabel }}
-      </cookie-comply-button>
-      <cookie-comply-button
-        class-name="cookie-comply__button-accept"
+      </cookie-banner-button>
+      <cookie-banner-button
+        class-name="cookie-banner__button-accept"
         @handle-click="handleAcceptAll"
       >
         {{ acceptAllLabel }}
-      </cookie-comply-button>
+      </cookie-banner-button>
     </div>
   </aside>
   <Teleport :to="target">
-    <cookie-comply-modal
+    <cookie-banner-modal
       v-if="isModalOpen"
       :preferences="preferences"
       :show-accept-all-in-modal="showAcceptAllInModal"
-      @cookie-comply-save="onSave"
-      @cookie-comply-accept-all="handleAcceptAll"
-      @cookie-comply-close="isModalOpen = false"
+      @cookie-banner-save="onSave"
+      @cookie-banner-accept-all="handleAcceptAll"
+      @cookie-banner-close="isModalOpen = false"
     >
       <template #modal-header>
         <slot name="modal-header"></slot>
@@ -57,28 +57,28 @@
       <template #modal-footer>
         <slot name="modal-footer"></slot>
       </template>
-    </cookie-comply-modal>
+    </cookie-banner-modal>
   </Teleport>
 
   <aside
-    v-if="showEditButton && !showCookieComply"
-    class="cookie-comply-edit"
+    v-if="showEditButton && !showCookieBanner"
+    class="cookie-banner-edit"
   >
-    <cookie-comply-button
-      class-name="cookie-comply__edit-button"
+    <cookie-banner-button
+      class-name="cookie-banner__edit-button"
       @handle-click="openPreferences"
     >
       <img :src="editCookieIconPath" alt="edit cookies">
-    </cookie-comply-button>
+    </cookie-banner-button>
 
     <Teleport :to="target">
-      <cookie-comply-modal
+      <cookie-banner-modal
         v-if="isModalOpen"
         :preferences="preferences"
         :show-accept-all-in-modal="showAcceptAllInModal"
-        @cookie-comply-save="onSave"
-        @cookie-comply-accept-all="handleAcceptAll"
-        @cookie-comply-close="isModalOpen = false"
+        @cookie-banner-save="onSave"
+        @cookie-banner-accept-all="handleAcceptAll"
+        @cookie-banner-close="isModalOpen = false"
       >
         <template #modal-header>
           <slot name="modal-header"></slot>
@@ -95,7 +95,7 @@
         <template #modal-footer>
           <slot name="modal-footer"></slot>
         </template>
-      </cookie-comply-modal>
+      </cookie-banner-modal>
     </Teleport>
   </aside>
 </template>
@@ -103,8 +103,8 @@
 <script setup lang="ts">
 import { defineProps, onMounted, ref, defineExpose, WritableComputedRef, watch } from "vue"
 import { getConsentValuesFromStorage } from '../shared/storageUtils'
-import CookieComplyModal from './CookieComplyModal.vue'
-import CookieComplyButton from './CookieComplyButton.vue'
+import CookieBannerModal from './CookieBannerModal.vue'
+import CookieBannerButton from './CookieBannerButton.vue'
 import { useScrollLock } from '@vueuse/core'
 
 interface Props {
@@ -125,8 +125,8 @@ interface Emits {
   (e: 'on-accept-all-cookies'): void
   (e: 'on-save-cookie-preferences', payload: Array<unknown>): void
   (e: 'on-reject-all-cookies'): void
-  (e: 'on-cookie-comply-mount'): void
-  (e: 'on-cookie-comply-mount', payload: Array<string> | string): void
+  (e: 'on-cookie-banner-mount'): void
+  (e: 'on-cookie-banner-mount', payload: Array<string> | string): void
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -145,7 +145,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 const emit = defineEmits<Emits>()
 
-const showCookieComply = ref(true)
+const showCookieBanner = ref(true)
 const isModalOpen = ref(false)
 
 onMounted((): void => {
@@ -155,8 +155,8 @@ onMounted((): void => {
 const body: HTMLBodyElement | null = document.querySelector('body')
 const isBodyLocked: WritableComputedRef<boolean> = useScrollLock(body, false)
 
-watch([showCookieComply, isModalOpen], () => {
-  if (showCookieComply.value || isModalOpen.value) {
+watch([showCookieBanner, isModalOpen], () => {
+  if (showCookieBanner.value || isModalOpen.value) {
     isBodyLocked.value = true
     return
   }
@@ -166,8 +166,8 @@ watch([showCookieComply, isModalOpen], () => {
 const checkValues = (): void => {
   const searchParams = new URLSearchParams(document.location.search)
   const consent = searchParams.get('consent')
-  if (consent || localStorage.getItem('cookie-comply')) {
-    showCookieComply.value = false;
+  if (consent || localStorage.getItem('cookie-banner')) {
+    showCookieBanner.value = false;
   }
   if (consent) {
     let consentValues: Array<string>
@@ -178,19 +178,19 @@ const checkValues = (): void => {
     }
     onSave(consentValues)
   }
-  emit('on-cookie-comply-mount', getConsentValuesFromStorage());
+  emit('on-cookie-banner-mount', getConsentValuesFromStorage());
 }
 
 
 const handleAcceptAll = (): void => {
   isModalOpen.value = false
-  showCookieComply.value = false;
-  localStorage.setItem('cookie-comply', 'all');
+  showCookieBanner.value = false;
+  localStorage.setItem('cookie-banner', 'all');
   emit('on-accept-all-cookies');
 }
 const handleRejectAll = (): void => {
-  showCookieComply.value = false;
-  localStorage.setItem('cookie-comply', '[]');
+  showCookieBanner.value = false;
+  localStorage.setItem('cookie-banner', '[]');
   emit('on-reject-all-cookies');
 }
 const openPreferences = (): void => {
@@ -198,22 +198,22 @@ const openPreferences = (): void => {
 }
 const onSave = (data: Array<string>): void => {
   isModalOpen.value = false;
-  showCookieComply.value = false;
+  showCookieBanner.value = false;
 
   // transform Proxy into array of selected preferences
   const preferencesArray = Object.values(data);
 
-  localStorage.setItem('cookie-comply', JSON.stringify(preferencesArray));
+  localStorage.setItem('cookie-banner', JSON.stringify(preferencesArray));
   emit('on-save-cookie-preferences', preferencesArray);
 }
-const openCookieComply = (): void => {
-  showCookieComply.value = true
+const openCookieBanner = (): void => {
+  showCookieBanner.value = true
 }
 const getAcceptedServices = (): Array<string> => {
   return getConsentValuesFromStorage()
 }
 
-defineExpose({openCookieComply, getAcceptedServices})
+defineExpose({openCookieBanner, getAcceptedServices})
 </script>
 
 <style lang="css">
@@ -237,7 +237,7 @@ defineExpose({openCookieComply, getAcceptedServices})
   }
 }
 
-.cookie-comply-body-grey-out {
+.cookie-banner-body-grey-out {
   position: fixed;
   top: 0;
   right: 0;
@@ -251,7 +251,7 @@ defineExpose({openCookieComply, getAcceptedServices})
   animation: fade-in 1s forwards;
 }
 
-.cookie-comply {
+.cookie-banner {
   display: grid;
   grid-gap: var(--spacing-lg);
   grid-template-columns: 1fr minmax(35%, 40%);
@@ -267,7 +267,7 @@ defineExpose({openCookieComply, getAcceptedServices})
   transform: translateY(110vh);
 }
 
-.cookie-comply-edit {
+.cookie-banner-edit {
   position: fixed;
   bottom: var(--spacing-sm);
   left: var(--spacing-sm);
@@ -275,28 +275,28 @@ defineExpose({openCookieComply, getAcceptedServices})
 }
 
 @media (max-width: 1024px) {
-  .cookie-comply {
+  .cookie-banner {
     grid-template-columns: none;
   }
 }
 
-.cookie-comply__header {
+.cookie-banner__header {
   justify-self: flex-start;
   text-align: initial;
 }
 
-.cookie-comply__header-title,
-.cookie-comply__header-description {
+.cookie-banner__header-title,
+.cookie-banner__header-description {
   margin: 0;
 }
-.cookie-comply__header-title {
+.cookie-banner__header-title {
   margin-bottom: var(--spacing-sm);
 }
-.cookie-comply__header-description {
+.cookie-banner__header-description {
   line-height: 20px;
 }
 
-.cookie-comply__actions {
+.cookie-banner__actions {
   display: grid;
   grid-gap: var(--spacing-lg);
   grid-template-columns: repeat(3, 1fr);
@@ -304,16 +304,16 @@ defineExpose({openCookieComply, getAcceptedServices})
 }
 
 @media (max-width: 480px) {
-  .cookie-comply__header {
+  .cookie-banner__header {
     margin-bottom: var(--spacing-sm);
   }
 
-  .cookie-comply__actions {
+  .cookie-banner__actions {
     grid-template-columns: auto;
   }
 }
 
-.cookie-comply__button-accept {
+.cookie-banner__button-accept {
   background-color: var(--color-green);
   color: var(--color-white);
   border: none;

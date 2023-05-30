@@ -1,5 +1,5 @@
 <template>
-  <button class="cookie-comply__button" :class="className" @click="handleClick">
+  <button class="cookie-banner__button" :class="className" @click="handleClick">
     <slot></slot>
   </button>
 </template>
@@ -26,7 +26,7 @@ const handleClick = (): void => {
 </script>
 
 <style>
-.cookie-comply__button {
+.cookie-banner__button {
   padding: 12px 32px;
   border: 1px solid #333;
   background-color: var(--color-white);
@@ -36,7 +36,7 @@ const handleClick = (): void => {
   cursor: pointer;
 }
 
-.cookie-comply__edit-button {
+.cookie-banner__edit-button {
   padding: 8px;
   border: 1px solid var(--color-green);
   background-color: var(--color-green);

@@ -8,13 +8,13 @@ export default defineConfig({
   build: {
     lib: {
       entry: path.resolve(__dirname, 'src/main.js'),
-      name: 'vue-cookie-comply',
+      name: 'vue-cookie-banner',
       fileName: (format) => {
         if (format === 'es') {
-          return `vue-cookie-comply.${format}.mjs`
+          return `vue-cookie-banner.${format}.mjs`
         }
         if (format === 'umd') {
-          return `vue-cookie-comply.${format}.js`
+          return `vue-cookie-banner.${format}.js`
         }
       },
     },
